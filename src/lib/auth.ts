@@ -33,13 +33,12 @@ export const signup = async (
   email: string
 ) => {
   try {
-    const id = new Date().getTime();
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id, email, username, password }),
+      body: JSON.stringify({ email, username, password }),
     });
     if (!response.ok) {
       throw new Error("Signup failed");
