@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import useUser from "@/hooks/useUser";
 import { useDispatch, useSelector } from "react-redux";
 import { createBoard } from "@/lib/boards";
-import { addBoard } from "@/store/boardSlice";
+import { addBoard } from "@/store/boardsSlice";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { RootState } from "@/store/store";

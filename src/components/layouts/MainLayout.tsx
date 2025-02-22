@@ -20,7 +20,7 @@ const MainLayout = () => {
     <>
       <div className="flex flex-grow-1">
         <Sidebar menuOpened={menuOpened}/>
-        <div className="flex-grow-1">
+        <div className="flex-grow-1 p-[8px] flex flex-col">
           <Header menuOpened={menuOpened} onButtonClicked={toggleMenu} />
           <Outlet />
         </div>

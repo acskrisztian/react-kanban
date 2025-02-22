@@ -23,6 +23,9 @@ const boardsSlice = createSlice({
     addBoard: (state, action: PayloadAction<Board>) => {
       state.boards.push(action.payload);
     },
+    deleteBoard: (state, action: PayloadAction<string>) => {
+      state.boards = state.boards.filter((board) => board.id !== action.payload);
+    }
   },
 });
 

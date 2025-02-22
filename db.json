@@ -15,19 +15,47 @@
   ],
   "boards": [
     {
-      "id": "0eed",
-      "title": "asd",
+      "id": "d7e4",
+      "title": "Greenfinity",
       "admin": "600f",
       "members": [
         "600f"
+      ],
+      "columns": [
+        {
+          "id": 1,
+          "title": "To Do"
+        },
+        {
+          "id": 2,
+          "title": "In Progress"
+        },
+        {
+          "id": 3,
+          "title": "Done"
+        }
       ]
     },
     {
-      "id": "affc",
-      "title": "asd123",
+      "id": "d12e",
+      "title": "almapaprika",
       "admin": "600f",
       "members": [
         "600f"
+      ],
+      "columns": [
+        {
+          "id": 1,
+          "title": "To Do"
+        },
+        {
+          "id": 2,
+          "title": "In Progress"
+        },
+        {
+          "id": 3,
+          "title": "Done"
+        }
       ]
     }
   ]

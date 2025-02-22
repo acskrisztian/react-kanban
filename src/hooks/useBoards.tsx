@@ -1,5 +1,5 @@
 import { getBoards } from "@/lib/boards";
-import { setBoards } from "@/store/boardSlice";
+import { setBoards } from "@/store/boardsSlice";
 import { RootState } from "@/store/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
