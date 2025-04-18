@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3001/boards";
+const API_URL = "http://localhost:3002/boards";
 
 export const createBoard = async ({
   title,
@@ -14,12 +14,14 @@ export const createBoard = async ({
       { id: 2, title: "In Progress" },
       { id: 3, title: "Done" },
     ];
+    const columnOrder = columns.map(col => col.id);
+    
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title, admin, members, columns }),
+      body: JSON.stringify({ title, admin, members, columns, columnOrder }),
     });
     const data = await response.json();
     return { id: data.id, title: data.title };
@@ -37,7 +39,7 @@ export const getBoards = async (userId: string) => {
       title: board.title,
     }));
   } catch (error) {
-    throw new Error("Failed to fetch boards");
+    throw new Error(error as string);
   }
 };
 
@@ -48,5 +50,20 @@ export const getBoard = async (id: string) => {
     return data;
   } catch (error) {
     throw new Error("Failed to fetch board");
+  }
+};
+
+export const updateBoard = async (id: string, data: any) => {
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    return await response.json();
+  } catch (error) {
+    throw new Error('Failed to update board');
   }
 };

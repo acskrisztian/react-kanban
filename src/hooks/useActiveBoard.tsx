@@ -1,5 +1,7 @@
 import { getBoard } from "@/lib/boards";
-import { setActiveBoard } from "@/store/activeBoardSlice";
+import { getTasksByBoard } from "@/lib/tasks";
+import { getUsers } from "@/lib/users";
+import { setActiveBoard, setTasks } from "@/store/activeBoardSlice";
 import { RootState } from "@/store/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,16 +15,22 @@ const useActiveBoard = () => {
   useEffect(() => {
     if (!id) return;
 
-    const fetchBoard = async () => {
+    const fetchBoardData = async () => {
       try {
-        const boardData = await getBoard(id);
-        dispatch(setActiveBoard(boardData));
+        const board = await getBoard(id);
+        const users = await getUsers(board.members);
+        const tasks = await getTasksByBoard(id);
+
+        board.members = users;
+
+        dispatch(setActiveBoard(board));
+        dispatch(setTasks(tasks));
       } catch (error) {
-        console.error("Failed to fetch board", error);
+        console.error("Failed to fetch board data", error);
       }
     };
 
-    fetchBoard();
+    fetchBoardData();
   }, [id, dispatch]);
 
   return board;

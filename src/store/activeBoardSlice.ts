@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { updateBoard } from "@/lib/boards";
+import { Task } from "@/lib/tasks";
 
 interface User {
   id: string;
@@ -10,18 +12,13 @@ interface Column {
   title: string;
 }
 
-interface Task {
-  id: string;
-  columnId: string;
-  title: string;
-}
-
 interface ActiveBoardState {
   id: string | null;
   title: string;
   admin: string;
   members: User[];
   columns: Column[];
+  columnOrder: string[];
   tasks: Task[];
 }
 
@@ -31,8 +28,10 @@ const initialState: ActiveBoardState = {
   admin: "",
   members: [],
   columns: [],
+  columnOrder: [],
   tasks: [],
 };
+
 
 const activeBoardSlice = createSlice({
   name: "activeBoard",
@@ -45,8 +44,11 @@ const activeBoardSlice = createSlice({
       state.id = action.payload.id;
       state.title = action.payload.title;
       state.admin = action.payload.admin;
-      state.members = action.payload.members;
       state.columns = action.payload.columns;
+      state.columnOrder =
+        action.payload.columnOrder ||
+        action.payload.columns.map((col) => col.id);
+      state.members = action.payload.members;
     },
     setTasks: (state, action: PayloadAction<Task[]>) => {
       state.tasks = action.payload;
@@ -88,8 +90,37 @@ const activeBoardSlice = createSlice({
         ...newColumnTasks,
       ];
     },
+    moveColumn: (
+      state,
+      action: PayloadAction<{
+        columnId: string;
+        toIndex: number;
+      }>
+    ) => {
+      const { columnId, toIndex } = action.payload;
+      const currentIndex = state.columnOrder.indexOf(columnId);
+
+      if (currentIndex === -1) return;
+
+      state.columnOrder.splice(currentIndex, 1);
+      state.columnOrder.splice(toIndex, 0, columnId);
+
+      if (state.id) {
+        updateBoard(state.id, {
+          columnOrder: state.columnOrder,
+        }).catch((error) => {
+          console.error("Failed to update column order:", error);
+          state.columnOrder.splice(toIndex, 1);
+          state.columnOrder.splice(currentIndex, 0, columnId);
+        });
+      }
+    },
+    addTask: (state, action: PayloadAction<Task>) => {
+      state.tasks.push(action.payload);
+    },
   },
 });
 
-export const { setActiveBoard, setTasks, moveTask } = activeBoardSlice.actions;
+export const { setActiveBoard, setTasks, moveTask, moveColumn, addTask } =
+  activeBoardSlice.actions;
 export default activeBoardSlice.reducer;
